@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello</title>
+    <link rel="stylesheet" href="./scss/app.scss" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header__wrap">
+          <div class="header__logo">
+            <a href="#"><img src="./image/logo-trello.png" alt="logo" /> </a>
+          </div>
+          <div class="header__clock">CLOCK</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="todos">
+      <div class="container">
+        <div class="todo__wrap">
+          <div class="todo__card" id="todo-card">
+            <div class="todo__top">
+              <h2 class="todo__title">TODO:</h2>
+              <span>2</span>
+            </div>
+
+            <div class="todo__content" id="todoList"></div>
+            <!-- кнопка снизу -->
+            <button
+              id="addTodoBtn"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Add TODO
+            </button>
+          </div>
+
+          <!-- вторая карточка -->
+
+          <div class="todo__card" id="in-progress-card">
+            <div class="todo__top">
+              <h2 class="todo__title">IN PROGRESS:</h2>
+              <span>2</span>
+            </div>
+
+            <div class="todo__content">
+              <div class="todo-item">
+                <h3 class="todo-item__title">Title</h3>
+                <p class="todo-item__description">Description</p>
+
+                <p class="todo-item__user">User<time class="todo-item__date">10:00</time></p>
+                <div class="todo-item__buttom">
+                  <button class="todo-item__edit-btn">Edit</button>
+                  <button class="todo-item__delete-btn">Delete</button>
+                  <button class="todo-item__move-btn">Move</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- третья карточка -->
+
+          <div class="todo__card" id="done-card">
+            <div class="todo__top">
+              <h2 class="todo__title">DONE:</h2>
+              <span>2</span>
+            </div>
+
+            <div class="todo__content">
+              <div class="todo-item">
+                <h3 class="todo-item__title">Title</h3>
+                <p class="todo-item__description">Description</p>
+
+                <p class="todo-item__user">User <time class="todo-item__date">10:00</time></p>
+                <div class="todo-item__buttom">
+                  <button class="todo-item__edit-btn">Edit</button>
+                  <button class="todo-item__delete-btn">Delete</button>
+                  <button class="todo-item__move-btn">Move</button>
+                </div>
+              </div>
+            </div>
+
+            <button id="addTodoBtn" class="btn btn-primary">Delete All</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- модальное окно -->
+
+    <div class="modal" id="exampleModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="todoForm">
+              <div class="form-group">
+                <label for="cardTitle">Title:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardTitle"
+                  placeholder="Enter task title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="cardDescription">Description:</label>
+                <textarea
+                  class="form-control"
+                  id="cardDescription"
+                  placeholder="Enter task description"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="userSelect">Assignee:</label>
+                <select class="form-control" id="userSelect">
+                  <option>User 1</option>
+                  <option>User 2</option>
+                  <option>User 3</option>
+                </select>
+              </div>
+              <!-- Форма внутри модального окна -->
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./scss/js/app.js"></script>
+  </body>
+</html>
