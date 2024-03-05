@@ -47,19 +47,7 @@
               <span>2</span>
             </div>
 
-            <div class="todo__content">
-              <div class="todo-item">
-                <h3 class="todo-item__title">Title</h3>
-                <p class="todo-item__description">Description</p>
-
-                <p class="todo-item__user">User<time class="todo-item__date">10:00</time></p>
-                <div class="todo-item__buttom">
-                  <button class="todo-item__edit-btn">Edit</button>
-                  <button class="todo-item__delete-btn">Delete</button>
-                  <button class="todo-item__move-btn">Move</button>
-                </div>
-              </div>
-            </div>
+            <div class="todo__content"></div>
           </div>
 
           <!-- третья карточка -->
@@ -70,21 +58,9 @@
               <span>2</span>
             </div>
 
-            <div class="todo__content">
-              <div class="todo-item">
-                <h3 class="todo-item__title">Title</h3>
-                <p class="todo-item__description">Description</p>
+            <div class="todo__content"></div>
 
-                <p class="todo-item__user">User <time class="todo-item__date">10:00</time></p>
-                <div class="todo-item__buttom">
-                  <button class="todo-item__edit-btn">Edit</button>
-                  <button class="todo-item__delete-btn">Delete</button>
-                  <button class="todo-item__move-btn">Move</button>
-                </div>
-              </div>
-            </div>
-
-            <button id="addTodoBtn" class="btn btn-primary">Delete All</button>
+            <button id="deleteTodoBtn" class="btn btn-primary">Delete All</button>
           </div>
         </div>
       </div>
@@ -137,6 +113,57 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- editModal -->
+    <div class="modal" id="editModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Modal</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editTodoForm">
+              <div class="form-group">
+                <label for="cardTitle">Title:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardTitle"
+                  placeholder="Enter task title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="cardDescription">Description:</label>
+                <textarea
+                  class="form-control"
+                  id="cardDescription"
+                  placeholder="Enter task description"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="userSelect">Assignee:</label>
+                <select class="form-control" id="editUserSelect">
+                  <option>User 1</option>
+                  <option>User 2</option>
+                  <option>User 3</option>
+                </select>
+              </div>
+              <!-- Форма внутри модального окна -->
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="editSaveChanges">Save changes</button>
           </div>
         </div>
       </div>
