@@ -84,9 +84,11 @@ body {
 
 .todo-item {
   text-align: left;
-  background-color: rgb(174, 255, 178);
+  // background-color: rgb(174, 255, 178);
+  background-color: #ffdab9;
   border-radius: 15px;
   padding: 20px;
+  transition: transform 0.1s ease-in-out;
 }
 
 .todo-item__title {
@@ -152,6 +154,14 @@ body {
 
 #cardSelect {
   width: auto;
+}
+
+.in-progress__content .todo-item {
+  background-color: #add8e6;
+}
+
+.done__content .todo-item {
+  background-color: #90ee90;
 }
 
 /* модальное окно */

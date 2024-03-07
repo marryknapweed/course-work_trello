@@ -47,7 +47,7 @@
               <span>2</span>
             </div>
 
-            <div class="todo__content"></div>
+            <div class="todo__content in-progress__content"></div>
           </div>
 
           <!-- третья карточка -->
@@ -58,7 +58,7 @@
               <span>2</span>
             </div>
 
-            <div class="todo__content"></div>
+            <div class="todo__content done__content"></div>
 
             <button id="deleteTodoBtn" class="btn btn-primary">Delete All</button>
           </div>
@@ -83,25 +83,25 @@
           <div class="modal-body">
             <form id="todoForm">
               <div class="form-group">
-                <label for="cardTitle">Title:</label>
+                <label for="addCardTitle">Title:</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="cardTitle"
+                  id="addCardTitle"
                   placeholder="Enter task title"
                 />
               </div>
               <div class="form-group">
-                <label for="cardDescription">Description:</label>
+                <label for="addCardDescription">Description:</label>
                 <textarea
                   class="form-control"
-                  id="cardDescription"
+                  id="addCardDescription"
                   placeholder="Enter task description"
                 ></textarea>
               </div>
               <div class="form-group">
-                <label for="userSelect">Assignee:</label>
-                <select class="form-control" id="userSelect">
+                <label for="addUserSelect">Assignee:</label>
+                <select class="form-control" id="addUserSelect">
                   <option>User 1</option>
                   <option>User 2</option>
                   <option>User 3</option>
@@ -134,24 +134,24 @@
           <div class="modal-body">
             <form id="editTodoForm">
               <div class="form-group">
-                <label for="cardTitle">Title:</label>
+                <label for="editCardTitle">Title:</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="cardTitle"
+                  id="editCardTitle"
                   placeholder="Enter task title"
                 />
               </div>
               <div class="form-group">
-                <label for="cardDescription">Description:</label>
+                <label for="editCardDescription">Description:</label>
                 <textarea
                   class="form-control"
-                  id="cardDescription"
+                  id="editCardDescription"
                   placeholder="Enter task description"
                 ></textarea>
               </div>
               <div class="form-group">
-                <label for="userSelect">Assignee:</label>
+                <label for="editUserSelect">Assignee:</label>
                 <select class="form-control" id="editUserSelect">
                   <option>User 1</option>
                   <option>User 2</option>

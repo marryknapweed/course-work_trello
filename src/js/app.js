@@ -12,11 +12,14 @@ function $$(selector) {
   return [...document.querySelectorAll(selector)];
 }
 // Вызовы
-todoListElement = $('.todo__content');
+todoListElement = $$('.todo__content');
+addTodoListItem = $('#todoList');
+inProgressListElement = $('.in-progress__content');
+doneListElement = $('.done__content');
 saveChangesBtn = $('#saveChanges');
-modalTitleInput = $('#cardTitle');
-modalDescriptionInput = $('#cardDescription');
-modalUserSelect = $('#userSelect');
+modalTitleInput = $('#addCardTitle');
+modalDescriptionInput = $('#addCardDescription');
+modalUserSelect = $('#addUserSelect');
 todoForms = $('#todoForm');
 cardSelector = $('.cardSelector');
 todoElement = $('.todo-item');
@@ -24,6 +27,12 @@ deleteButtomElement = $('.delete');
 
 // События
 saveChangesBtn.addEventListener('click', handleSaveChanges);
+// addTodoListItem.addEventListener('change', handleStatusChange);
+// inProgressListElement.addEventListener('change', handleStatusChange);
+// doneListElement.addEventListener('change', handleStatusChange);
+todoListElement.forEach(element => {
+  element.addEventListener('change', handleStatusChange);
+});
 
 const todosData = getTodosFromLocalstorage();
 
@@ -47,9 +56,9 @@ function buildTemplate({id, title, description, user, createdAt, status}) {
       <button class="todo-item__edit-btn">Edit</button>
       <button class="todo-item__delete-btn" data-role="delete">Delete</button>
       <select class="form-control cardSelector" data-id="${id}">
-        <option ${status === 'TODO' ? 'selected' : ''}>TODO</option>
-        <option ${status === 'IN PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
-        <option ${status === 'DONE' ? 'selected' : ''}>DONE</option>
+      <option value="TODO" ${status === 'TODO' ? 'selected' : ''}>TODO</option>
+      <option value="IN_PROGRESS" ${status === 'IN_PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
+      <option value="DONE" ${status === 'DONE' ? 'selected' : ''}>DONE</option>
       </select>
     </div>
   </div>
@@ -75,13 +84,20 @@ function setTodosToLocalstorage(todosData) {
 }
 
 function renderData() {
-  let html = '';
+  let todoHtml = [],
+    progressHtml = [],
+    doneHtml = [];
+
   todosData.forEach(todo => {
-    const template = buildTemplate(todo);
-    html += template;
+    const item = buildTemplate(todo);
+    todo.status === STATUS.TODO && todoHtml.push(item);
+    todo.status === STATUS.IN_PROGRESS && progressHtml.push(item);
+    todo.status === STATUS.DONE && doneHtml.push(item);
   });
 
-  todoListElement.innerHTML = html;
+  addTodoListItem.innerHTML = todoHtml.join('');
+  inProgressListElement.innerHTML = progressHtml.join('');
+  doneListElement.innerHTML = doneHtml.join('');
 }
 
 function createTodo(title, description, user, status) {
@@ -130,47 +146,42 @@ function handleClickRemoveButton({target}) {
   setTodosToLocalstorage();
   renderData();
 }
-todoListElement.addEventListener('click', handleClickRemoveButton);
+// todoListElement.addEventListener('click', handleClickRemoveButton);
+todoListElement.forEach(button => {
+  button.addEventListener('click', handleClickRemoveButton);
+});
 
-// function handleCardSelectorChange({target}) {
-//   const newStatus = target.value;
-//   const taskId = target.closest('.todo-item').dataset.id;
+// изменение задачи
 
-//   todosData.forEach(todo => {
-//     todo.tasks.forEach(task => {
-//       if (task.id == taskId) {
-//         task.status = newStatus;
-//       }
-//     });
-//   });
+// функция обработки изменения статуса
+function handleStatusChange(event) {
+  const target = event.target;
+  if (target.classList.contains('cardSelector')) {
+    const taskId = target.closest('.todo-item').dataset.id;
+    const newStatus = target.value;
+    updateTaskStatus(taskId, newStatus);
+  }
+  setTodosToLocalstorage(todosData);
+}
 
-//   setTodosToLocalstorage(todosData);
-//   renderData();
-// }
+function updateTaskStatus(taskId, newStatus) {
+  const task = todosData.find(task => task.id === +taskId);
+  if (task) {
+    task.status = newStatus;
+    setTodosToLocalstorage(todosData);
+    renderData();
+    // Изменение цвета фона в зависимости от статуса
+    // const taskElement = document.querySelector(`[data-id="${taskId}"]`);
+    // const colors = {
+    //   TODO: 'rgb(174, 255, 178)',
+    //   IN_PROGRESS: 'rgb(75, 255, 14)',
+    //   DONE: 'rgb(25, 174, 174)',
+    // };
 
-// function handleCardSelectorChange({target}) {
-//   const newStatus = target.value;
-//   const taskId = target.closest('.todo-item').dataset.id;
-
-//   todosData.forEach(category => {
-//     const task = category.tasks.find(task => task.id == taskId);
-//     if (task) {
-//       const taskIndex = category.tasks.indexOf(task);
-//       category.tasks.splice(taskIndex, 1);
-
-//       if (newStatus === 'TODO') {
-//         todosData[0].tasks.push(task);
-//       } else if (newStatus === 'IN PROGRESS') {
-//         todosData[1].tasks.push(task);
-//       } else if (newStatus === 'DONE') {
-//         todosData[2].tasks.push(task);
-//       }
-//     }
-//   });
-
-//   setTodosToLocalstorage(todosData);
-//   renderData();
-// }
+    // const backgroundColor = colors[newStatus];
+    // taskElement.style.backgroundColor = backgroundColor;
+  }
+}
 
 // время счет настоящее
 
