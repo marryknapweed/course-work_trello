@@ -24,15 +24,16 @@ todoForms = $('#todoForm');
 cardSelector = $('.cardSelector');
 todoElement = $('.todo-item');
 deleteButtomElement = $('.delete');
+deleteAllButton = $('.deleteTodoBtn');
+deleteAllDoneModal = $('#deleteAllDoneModal');
+confirmDeleteButton = $('#confirmDelete');
 
 // События
 saveChangesBtn.addEventListener('click', handleSaveChanges);
-// addTodoListItem.addEventListener('change', handleStatusChange);
-// inProgressListElement.addEventListener('change', handleStatusChange);
-// doneListElement.addEventListener('change', handleStatusChange);
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
 });
+// deleteAllButtomElement.addEventListener('click', handleDeleteAllDone);
 
 const todosData = getTodosFromLocalstorage();
 
@@ -133,6 +134,7 @@ function handleSaveChanges() {
   renderData();
 }
 
+// удаление задачи
 function handleClickRemoveButton({target}) {
   const {role} = target.dataset;
 
@@ -143,7 +145,7 @@ function handleClickRemoveButton({target}) {
 
   const index = todosData.findIndex(todo => todo.id == +id);
   todosData.splice(index, 1);
-  setTodosToLocalstorage();
+  setTodosToLocalstorage(todosData);
   renderData();
 }
 // todoListElement.addEventListener('click', handleClickRemoveButton);
@@ -164,6 +166,7 @@ function handleStatusChange(event) {
   setTodosToLocalstorage(todosData);
 }
 
+// изменение статуса
 function updateTaskStatus(taskId, newStatus) {
   const task = todosData.find(task => task.id === +taskId);
   if (task) {
@@ -183,6 +186,42 @@ function updateTaskStatus(taskId, newStatus) {
   }
 }
 
+// подумать еще как сделать удаление всех выполненных
+// deleteAllButtomElement.addEventListener('click', handleDeleteAllDone);
+
+// function handleDeleteAllDone() {
+//   const confirmed = confirm('Are you sure you want to delete all tasks from the DONE section?');
+//   if (confirmed) {
+//     const filteredTodosData = todosData.filter(todo => todo.status !== STATUS.DONE);
+//     todosData.length = 0;
+//     filteredTodosData.forEach(todo => todosData.push(todo));
+//     setTodosToLocalstorage(todosData);
+//     renderData();
+//   }
+// }
+
+// удаляем задания из Done
+// Получаем модальное окно
+const modal = new bootstrap.Modal(deleteAllDoneModal);
+
+deleteAllButton.addEventListener('click', function () {
+  // Показываем модальное окно
+  modal.show();
+});
+
+confirmDeleteButton.addEventListener('click', function () {
+  handleDeleteAllDone();
+  modal.hide();
+});
+
+// Функция для удаления всех задач из "DONE"
+function handleDeleteAllDone() {
+  const filteredTodosData = todosData.filter(todo => todo.status !== STATUS.DONE);
+  todosData.length = 0;
+  filteredTodosData.forEach(todo => todosData.push(todo));
+  setTodosToLocalstorage(todosData);
+  renderData();
+}
 // время счет настоящее
 
 // 1 способ

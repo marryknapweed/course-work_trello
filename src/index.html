@@ -60,7 +60,14 @@
 
             <div class="todo__content done__content"></div>
 
-            <button id="deleteTodoBtn" class="btn btn-primary">Delete All</button>
+            <button
+              type="button"
+              class="deleteTodoBtn"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteAllDoneModal"
+            >
+              Delete All
+            </button>
           </div>
         </div>
       </div>
@@ -164,6 +171,30 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="editSaveChanges">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- модальное окно для удаления -->
+    <div class="modal" tabindex="-1" id="deleteAllDoneModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Подтвердите удаление</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Вы уверены, что хотите удалить все задачи из списка «DONE»?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" id="confirmDelete">Удалить</button>
           </div>
         </div>
       </div>
