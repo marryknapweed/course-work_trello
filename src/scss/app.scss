@@ -63,6 +63,9 @@ body {
   position: relative;
   box-shadow: 10px 10px 10px rgba(59, 70, 70, 0.551);
 }
+#in-progress-card .todo__content {
+  height: calc(100% - 70px);
+}
 
 .todo__top {
   background-color: rgba(104, 205, 205, 0.551);
@@ -84,7 +87,6 @@ body {
 
 .todo-item {
   text-align: left;
-  // background-color: rgb(174, 255, 178);
   background-color: #ffdab9;
   border-radius: 15px;
   padding: 20px;
@@ -101,6 +103,9 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+}
+.todo-item__date {
+  text-align: right;
 }
 
 .todo-item__buttom {

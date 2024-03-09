@@ -115,25 +115,95 @@ function createTodo(title, description, user, status) {
   return tasks;
 }
 
+// function handleSaveChanges() {
+//   const title = modalTitleInput.value;
+//   const description = modalDescriptionInput.value;
+//   const user = modalUserSelect.value;
+//   const status = STATUS.TODO;
+
+//   const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+//   if (inProgressCount >= 6) {
+//     alert(
+//       'К сожалению, вы не можете добавить больше 6 карточек. Сначала выполните начатые задачи.'
+//     );
+//     return;
+//   }
+
+//   const newTodo = createTodo(title, description, user, status);
+
+//   todosData.push(newTodo);
+
+//   modalTitleInput.value = '';
+//   modalDescriptionInput.value = '';
+//   modalUserSelect.value = '';
+
+//   const closeButton = $('.btn-close');
+//   closeButton.click();
+
+//   setTodosToLocalstorage(todosData);
+//   renderData();
+//   updateTaskCount();
+// }
+
+// Функция для загрузки пользователей с сервера
+async function fetchUsers() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    if (response.status === 200) {
+      const users = await response.json();
+      return users;
+    }
+    return Promise.reject(`Error: ${response.status}: ${response.statusText}`);
+  } catch (error) {
+    console.error(error);
+  }
+}
+// Функция для заполнения выпадающего списка
+async function loadUsersAndPopulateSelect() {
+  const modalUserSelect = document.getElementById('addUserSelect');
+  try {
+    const users = await fetchUsers();
+    users.forEach(user => {
+      const option = document.createElement('option');
+      option.textContent = user.name;
+      modalUserSelect.append(option);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadUsersAndPopulateSelect();
+});
+
 function handleSaveChanges() {
   const title = modalTitleInput.value;
   const description = modalDescriptionInput.value;
   const user = modalUserSelect.value;
   const status = STATUS.TODO;
 
+  // Создаем новую задачу
   const newTodo = createTodo(title, description, user, status);
 
+  // Добавляем новую задачу в массив
   todosData.push(newTodo);
 
+  // Сбрасываем значения полей ввода
   modalTitleInput.value = '';
   modalDescriptionInput.value = '';
   modalUserSelect.value = '';
 
+  // Закрываем модальное окно
   const closeButton = $('.btn-close');
   closeButton.click();
 
+  // Обновляем локальное хранилище и отрисовываем задачи
   setTodosToLocalstorage(todosData);
   renderData();
+
+  // После обновления данных проверяем счетчики и показываем сообщение об ошибке, если нужно
+  updateTaskCount();
 }
 
 // удаление задачи
@@ -163,6 +233,17 @@ function handleStatusChange(event) {
   if (target.classList.contains('cardSelector')) {
     const taskId = target.closest('.todo-item').dataset.id;
     const newStatus = target.value;
+
+    // Проверяем количество карточек в разделе "IN_PROGRESS"
+    const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+
+    if (newStatus === STATUS.IN_PROGRESS && inProgressCount >= 6) {
+      alert(
+        'К сожалению, вы не можете добавить больше 6 карточек в раздел "IN PROGRESS". Сначала выполните начатые задачи.'
+      );
+      return;
+    }
+
     updateTaskStatus(taskId, newStatus);
   }
   setTodosToLocalstorage(todosData);
@@ -225,18 +306,6 @@ function handleDeleteAllDone() {
   renderData();
 }
 
-// function updateTaskCount() {
-//   const todoCount = todosData.filter(todo => todo.status === STATUS.TODO).length;
-//   const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
-//   const doneCount = todosData.filter(todo => todo.status === STATUS.DONE).length;
-
-//   todoCountElement = todoCount;
-//   inProgressCountElement = inProgressCount;
-//   doneCountElement = doneCount;
-// }
-
-// updateTaskCount();
-
 // счетчик задач
 function updateTaskCount() {
   const todoCount = todosData.filter(todo => todo.status === STATUS.TODO).length;
@@ -246,7 +315,18 @@ function updateTaskCount() {
   $('#todoCount').textContent = todoCount;
   $('#inProgressCount').textContent = inProgressCount;
   $('#doneCount').textContent = doneCount;
+
+  // // Проверяем количество задач в разделе "IN_PROGRESS"
+  // const inProgressCount1 = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+
+  // if (inProgressCount1 > 6) {
+  //   alert(
+  //     'К сожалению, вы не можете добавить больше 6 карточек. Сначала выполните начатые задачи.'
+  //   );
+  //   return;
+  // }
 }
+
 // время счет настоящее
 
 // 1 способ
