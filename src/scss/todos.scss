@@ -1,0 +1,93 @@
+.todos {
+  padding: 50px 0px;
+}
+.todo__wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.todo__card {
+  text-align: center;
+  border: 2px solid rgba(104, 205, 205, 0.551);
+  border-radius: 10px;
+  height: 80vh;
+  position: relative;
+  box-shadow: 10px 10px 10px rgba(59, 70, 70, 0.551);
+}
+
+.todo__top {
+  background-color: rgba(104, 205, 205, 0.551);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+  align-items: center; /* изменено значение align-items */
+  font-weight: 500;
+}
+
+.todo__title {
+  font-size: 20px;
+  margin: 0;
+  color: rgb(0, 122, 192);
+}
+
+.todo__content {
+  padding: 10px;
+  font-size: 15px;
+  overflow-y: auto; /* Применить прокрутку только по вертикали */
+  height: calc(100% - 100px);
+}
+
+#addTodoBtn {
+  width: 100%;
+  cursor: pointer;
+  color: black;
+  border: none;
+  background-color: rgba(104, 205, 205, 0.551);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 18px;
+  padding: 15px 0px;
+  font-weight: 400;
+}
+
+#addTodoBtn:hover {
+  background-color: rgba(0, 122, 192, 0.609);
+}
+
+// вторая карточка
+
+#in-progress-card .todo__content {
+  height: calc(100% - 50px);
+}
+
+.in-progress__content .todo-item {
+  background-color: #add8e6;
+}
+
+// третья карточка
+
+.deleteTodoBtn {
+  width: 100%;
+  cursor: pointer;
+  color: black;
+  border: none;
+  background-color: rgba(104, 205, 205, 0.551);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 18px;
+  padding: 15px 0px;
+  border-radius: 5px;
+}
+
+.deleteTodoBtn:hover {
+  background-color: rgba(255, 0, 0, 0.622);
+}
+
+.done__content .todo-item {
+  background-color: #90ee90;
+}

@@ -79,7 +79,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">Добавить новое задание</h5>
             <button
               type="button"
               class="btn-close"
@@ -90,7 +90,7 @@
           <div class="modal-body">
             <form id="todoForm">
               <div class="form-group">
-                <label for="addCardTitle">Title:</label>
+                <label for="addCardTitle">Название:</label>
                 <input
                   type="text"
                   class="form-control"
@@ -99,7 +99,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="addCardDescription">Description:</label>
+                <label for="addCardDescription">Описание:</label>
                 <textarea
                   class="form-control"
                   id="addCardDescription"
@@ -107,15 +107,15 @@
                 ></textarea>
               </div>
               <div class="form-group">
-                <label for="addUserSelect">Assignee:</label>
+                <label for="addUserSelect">Исполнитель:</label>
                 <select class="form-control" id="addUserSelect"></select>
               </div>
               <!-- Форма внутри модального окна -->
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="saveChanges">Добавить</button>
           </div>
         </div>
       </div>
@@ -155,11 +155,7 @@
               </div>
               <div class="form-group">
                 <label for="editUserSelect">Assignee:</label>
-                <select class="form-control" id="editUserSelect">
-                  <option>User 1</option>
-                  <option>User 2</option>
-                  <option>User 3</option>
-                </select>
+                <select class="form-control" id="editUserSelect"></select>
               </div>
               <!-- Форма внутри модального окна -->
             </form>

@@ -16,10 +16,10 @@ todoListElement = $$('.todo__content');
 addTodoListItem = $('#todoList');
 inProgressListElement = $('.in-progress__content');
 doneListElement = $('.done__content');
-saveChangesBtn = $('#saveChanges');
+saveChangesBtnEdit = $('#editSaveChanges');
 modalTitleInput = $('#addCardTitle');
 modalDescriptionInput = $('#addCardDescription');
-modalUserSelect = $('#addUserSelect');
+modalAddUserSelect = $('#addUserSelect');
 todoForms = $('#todoForm');
 cardSelector = $('.cardSelector');
 todoElement = $('.todo-item');
@@ -29,7 +29,7 @@ deleteAllDoneModal = $('#deleteAllDoneModal');
 confirmDeleteButton = $('#confirmDelete');
 
 // События
-saveChangesBtn.addEventListener('click', handleSaveChanges);
+// saveChangesBtnEdit.addEventListener('click', handleClickEditButton);
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
 });
@@ -54,7 +54,7 @@ function buildTemplate({id, title, description, user, createdAt, status}) {
       ${user}<time class="todo-item__date">${time}</time>
     </p>
     <div class="todo-item__buttom">
-      <button class="todo-item__edit-btn">Edit</button>
+      <button class="todo-item__edit-btn" data-role="edit">Edit</button>
       <button class="todo-item__delete-btn" data-role="delete">Delete</button>
       <select class="form-control cardSelector" data-id="${id}">
       <option value="TODO" ${status === 'TODO' ? 'selected' : ''}>TODO</option>
@@ -115,36 +115,6 @@ function createTodo(title, description, user, status) {
   return tasks;
 }
 
-// function handleSaveChanges() {
-//   const title = modalTitleInput.value;
-//   const description = modalDescriptionInput.value;
-//   const user = modalUserSelect.value;
-//   const status = STATUS.TODO;
-
-//   const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
-//   if (inProgressCount >= 6) {
-//     alert(
-//       'К сожалению, вы не можете добавить больше 6 карточек. Сначала выполните начатые задачи.'
-//     );
-//     return;
-//   }
-
-//   const newTodo = createTodo(title, description, user, status);
-
-//   todosData.push(newTodo);
-
-//   modalTitleInput.value = '';
-//   modalDescriptionInput.value = '';
-//   modalUserSelect.value = '';
-
-//   const closeButton = $('.btn-close');
-//   closeButton.click();
-
-//   setTodosToLocalstorage(todosData);
-//   renderData();
-//   updateTaskCount();
-// }
-
 // Функция для загрузки пользователей с сервера
 async function fetchUsers() {
   try {
@@ -160,13 +130,21 @@ async function fetchUsers() {
 }
 // Функция для заполнения выпадающего списка
 async function loadUsersAndPopulateSelect() {
-  const modalUserSelect = document.getElementById('addUserSelect');
+  const modalAddUserSelect = document.getElementById('addUserSelect');
+  const modalEditUserSelect = document.getElementById('editUserSelect');
+
   try {
     const users = await fetchUsers();
     users.forEach(user => {
-      const option = document.createElement('option');
-      option.textContent = user.name;
-      modalUserSelect.append(option);
+      const optionAdd = document.createElement('option');
+      const optionEdit = optionAdd.cloneNode(true);
+
+      optionAdd.textContent = user.name;
+      optionEdit.textContent = user.name;
+
+      modalAddUserSelect.append(optionAdd);
+      modalEditUserSelect.append(optionEdit);
+      // modalEditUserSelect.append(option.cloneNode(true));
     });
   } catch (error) {
     console.error(error);
@@ -180,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleSaveChanges() {
   const title = modalTitleInput.value;
   const description = modalDescriptionInput.value;
-  const user = modalUserSelect.value;
+  const user = modalAddUserSelect.value;
   const status = STATUS.TODO;
 
   // Создаем новую задачу
@@ -192,7 +170,7 @@ function handleSaveChanges() {
   // Сбрасываем значения полей ввода
   modalTitleInput.value = '';
   modalDescriptionInput.value = '';
-  modalUserSelect.value = '';
+  modalAddUserSelect.value = '';
 
   // Закрываем модальное окно
   const closeButton = $('.btn-close');
@@ -226,6 +204,81 @@ todoListElement.forEach(button => {
 });
 
 // изменение задачи
+
+// изменение задачи и открытие модального окна редактирования
+// function handleClickEditButton(event) {
+//   const {role} = event.target.dataset;
+
+//   if (role === 'edit') {
+//     const todoElement = event.target.closest('.todo-item');
+//     const id = todoElement.dataset.id;
+//     const task = todosData.find(task => task.id === +id);
+
+//     // Заполните модальное окно данными выбранного задания
+//     document.getElementById('editCardTitle').value = task.title;
+//     document.getElementById('editCardDescription').value = task.description;
+//     // document.getElementById('addUserSelect').value = task.user;
+//     // Здесь можно добавить код для заполнения других полей формы модального окна, если есть
+
+//     // Показать модальное окно
+//     const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+//     editModal.show();
+//   }
+// }
+
+// // Добавляем обработчик событий для кнопок "Edit"
+// document.querySelectorAll('.todo-item__edit-btn').forEach(button => {
+//   button.addEventListener('click', handleClickEditButton);
+// });
+
+function handleClickEditButton(event) {
+  const {role} = event.target.dataset;
+
+  if (role === 'edit') {
+    const todoElement = event.target.closest('.todo-item');
+    const id = todoElement.dataset.id;
+    const task = todosData.find(task => task.id === +id);
+
+    // Заполняем модальное окно данными задания
+    document.getElementById('editCardTitle').value = task.title;
+    document.getElementById('editCardDescription').value = task.description;
+    document.getElementById('addUserSelect').value = task.user;
+
+    // Показать модальное окно
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    editModal.show();
+
+    // Добавляем обработчик события для кнопки "Save" внутри модального окна редактирования
+    document.getElementById('editSaveChanges').addEventListener('click', function () {
+      // Получаем значения из полей формы
+      const editedTitle = document.getElementById('editCardTitle').value;
+      const editedDescription = document.getElementById('editCardDescription').value;
+      const editedUser = document.getElementById('editUserSelect').value;
+
+      // Обновляем данные задачи
+      task.title = editedTitle;
+      task.description = editedDescription;
+      task.user = editedUser;
+
+      // Закрываем модальное окно редактирования
+      editModal.hide();
+
+      // Перерисовываем задачи на странице
+      renderData();
+
+      // Обновляем локальное хранилище и отрисовываем задачи
+      setTodosToLocalstorage(todosData);
+    });
+  }
+}
+
+// Добавляем обработчик событий для кнопок "Edit"
+document.querySelectorAll('.todo-item__edit-btn').forEach(button => {
+  button.addEventListener('click', handleClickEditButton);
+});
+
+// // Добавляем обработчик события для кнопки "Save" в модальном окне редактирования
+// document.getElementById('editSaveChanges').addEventListener('click', handleEditSaveChanges);
 
 // функция обработки изменения статуса
 function handleStatusChange(event) {

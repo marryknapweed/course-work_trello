@@ -1,0 +1,25 @@
+.header {
+  background-color: rgba(104, 205, 205, 0.551);
+  padding: 15px 0px;
+}
+
+.header__wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.header__logo {
+  font-size: 24px;
+}
+
+.header__logo img {
+  width: 100px;
+  height: auto;
+}
+
+.header__clock {
+  font-size: 18px;
+  font-family: 'Roboto';
+}

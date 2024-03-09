@@ -1,0 +1,64 @@
+.todo-item {
+  text-align: left;
+  background-color: #ffdab9;
+  border-radius: 15px;
+  padding: 20px;
+  transition: transform 0.1s ease-in-out;
+  margin: 10px 0px;
+}
+
+.todo-item__title {
+  margin-bottom: 15px;
+  font-weight: 400;
+}
+
+.todo-item__description {
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.todo-item__user {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.todo-item__date {
+  text-align: right;
+}
+
+.todo-item__buttom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-item__edit-btn,
+.todo-item__delete-btn {
+  margin-right: 5px;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 2px 2px 2px rgba(59, 70, 70, 0.551);
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+.todo-item__delete-btn:hover {
+  background-color: rgba(255, 0, 0, 0.622);
+  color: white;
+}
+.todo-item__edit-btn:hover {
+  background-color: #ecee90af;
+}
+
+.cardSelector {
+  padding: 6px 15px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 2px 2px 2px rgba(59, 70, 70, 0.551);
+  cursor: pointer;
+  text-align: center;
+  background-color: whitesmoke;
+}
