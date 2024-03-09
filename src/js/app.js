@@ -99,6 +99,8 @@ function renderData() {
   addTodoListItem.innerHTML = todoHtml.join('');
   inProgressListElement.innerHTML = progressHtml.join('');
   doneListElement.innerHTML = doneHtml.join('');
+
+  updateTaskCount();
 }
 
 function createTodo(title, description, user, status) {
@@ -221,6 +223,29 @@ function handleDeleteAllDone() {
   filteredTodosData.forEach(todo => todosData.push(todo));
   setTodosToLocalstorage(todosData);
   renderData();
+}
+
+// function updateTaskCount() {
+//   const todoCount = todosData.filter(todo => todo.status === STATUS.TODO).length;
+//   const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+//   const doneCount = todosData.filter(todo => todo.status === STATUS.DONE).length;
+
+//   todoCountElement = todoCount;
+//   inProgressCountElement = inProgressCount;
+//   doneCountElement = doneCount;
+// }
+
+// updateTaskCount();
+
+// счетчик задач
+function updateTaskCount() {
+  const todoCount = todosData.filter(todo => todo.status === STATUS.TODO).length;
+  const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+  const doneCount = todosData.filter(todo => todo.status === STATUS.DONE).length;
+
+  $('#todoCount').textContent = todoCount;
+  $('#inProgressCount').textContent = inProgressCount;
+  $('#doneCount').textContent = doneCount;
 }
 // время счет настоящее
 
