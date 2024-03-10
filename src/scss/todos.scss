@@ -22,8 +22,7 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-
-  align-items: center; /* изменено значение align-items */
+  align-items: center;
   font-weight: 500;
 }
 
@@ -36,7 +35,7 @@
 .todo__content {
   padding: 10px;
   font-size: 15px;
-  overflow-y: auto; /* Применить прокрутку только по вертикали */
+  overflow-y: auto;
   height: calc(100% - 100px);
 }
 
