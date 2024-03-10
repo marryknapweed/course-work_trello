@@ -7,7 +7,7 @@ const STATUS = {
 function $(selector) {
   return document.querySelector(selector);
 }
-
+// $$
 function $$(selector) {
   return [...document.querySelectorAll(selector)];
 }
@@ -16,29 +16,26 @@ todoListElement = $$('.todo__content');
 addTodoListItem = $('#todoList');
 inProgressListElement = $('.in-progress__content');
 doneListElement = $('.done__content');
-saveChangesBtnEdit = $('#editSaveChanges');
+saveChangesBtnAdd = $('#saveChanges');
 modalTitleInput = $('#addCardTitle');
 modalDescriptionInput = $('#addCardDescription');
 modalAddUserSelect = $('#addUserSelect');
-todoForms = $('#todoForm');
 cardSelector = $('.cardSelector');
-todoElement = $('.todo-item');
-deleteButtomElement = $('.delete');
 deleteAllButton = $('.deleteTodoBtn');
 deleteAllDoneModal = $('#deleteAllDoneModal');
 confirmDeleteButton = $('#confirmDelete');
 
 // События
-// saveChangesBtnEdit.addEventListener('click', handleClickEditButton);
+saveChangesBtnAdd.addEventListener('click', handleSaveChanges);
+
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
 });
-// deleteAllButtomElement.addEventListener('click', handleDeleteAllDone);
 
 const todosData = getTodosFromLocalstorage();
 
 if (todosData.length > 0) {
-  renderData(); // Отобразить данные из localStorage, если они есть
+  renderData();
 }
 
 function buildTemplate({id, title, description, user, createdAt, status}) {
@@ -89,11 +86,11 @@ function renderData() {
     progressHtml = [],
     doneHtml = [];
 
-  todosData.forEach(todo => {
-    const item = buildTemplate(todo);
-    todo.status === STATUS.TODO && todoHtml.push(item);
-    todo.status === STATUS.IN_PROGRESS && progressHtml.push(item);
-    todo.status === STATUS.DONE && doneHtml.push(item);
+  todosData.forEach(task => {
+    const item = buildTemplate(task);
+    task.status === STATUS.TODO && todoHtml.push(item);
+    task.status === STATUS.IN_PROGRESS && progressHtml.push(item);
+    task.status === STATUS.DONE && doneHtml.push(item);
   });
 
   addTodoListItem.innerHTML = todoHtml.join('');
@@ -144,7 +141,6 @@ async function loadUsersAndPopulateSelect() {
 
       modalAddUserSelect.append(optionAdd);
       modalEditUserSelect.append(optionEdit);
-      // modalEditUserSelect.append(option.cloneNode(true));
     });
   } catch (error) {
     console.error(error);
@@ -161,27 +157,19 @@ function handleSaveChanges() {
   const user = modalAddUserSelect.value;
   const status = STATUS.TODO;
 
-  // Создаем новую задачу
   const newTodo = createTodo(title, description, user, status);
 
-  // Добавляем новую задачу в массив
   todosData.push(newTodo);
 
-  // Сбрасываем значения полей ввода
   modalTitleInput.value = '';
   modalDescriptionInput.value = '';
   modalAddUserSelect.value = '';
 
-  // Закрываем модальное окно
   const closeButton = $('.btn-close');
   closeButton.click();
 
-  // Обновляем локальное хранилище и отрисовываем задачи
   setTodosToLocalstorage(todosData);
   renderData();
-
-  // После обновления данных проверяем счетчики и показываем сообщение об ошибке, если нужно
-  updateTaskCount();
 }
 
 // удаление задачи
@@ -193,80 +181,49 @@ function handleClickRemoveButton({target}) {
   const todoElement = target.closest('.todo-item');
   const id = todoElement.dataset.id;
 
-  const index = todosData.findIndex(todo => todo.id == +id);
+  const index = todosData.findIndex(task => task.id == +id);
   todosData.splice(index, 1);
   setTodosToLocalstorage(todosData);
   renderData();
 }
-// todoListElement.addEventListener('click', handleClickRemoveButton);
 todoListElement.forEach(button => {
   button.addEventListener('click', handleClickRemoveButton);
 });
 
 // изменение задачи
 
-// изменение задачи и открытие модального окна редактирования
-// function handleClickEditButton(event) {
-//   const {role} = event.target.dataset;
-
-//   if (role === 'edit') {
-//     const todoElement = event.target.closest('.todo-item');
-//     const id = todoElement.dataset.id;
-//     const task = todosData.find(task => task.id === +id);
-
-//     // Заполните модальное окно данными выбранного задания
-//     document.getElementById('editCardTitle').value = task.title;
-//     document.getElementById('editCardDescription').value = task.description;
-//     // document.getElementById('addUserSelect').value = task.user;
-//     // Здесь можно добавить код для заполнения других полей формы модального окна, если есть
-
-//     // Показать модальное окно
-//     const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-//     editModal.show();
-//   }
-// }
-
-// // Добавляем обработчик событий для кнопок "Edit"
-// document.querySelectorAll('.todo-item__edit-btn').forEach(button => {
-//   button.addEventListener('click', handleClickEditButton);
-// });
-
-function handleClickEditButton(event) {
-  const {role} = event.target.dataset;
+function handleClickEditButton({target}) {
+  const {role} = target.dataset;
 
   if (role === 'edit') {
-    const todoElement = event.target.closest('.todo-item');
+    const todoElement = target.closest('.todo-item');
     const id = todoElement.dataset.id;
     const task = todosData.find(task => task.id === +id);
 
     // Заполняем модальное окно данными задания
-    document.getElementById('editCardTitle').value = task.title;
-    document.getElementById('editCardDescription').value = task.description;
-    document.getElementById('addUserSelect').value = task.user;
+    $('#editCardTitle').value = task.title;
+    $('#editCardDescription').value = task.description;
+    $('#addUserSelect').value = task.user;
 
     // Показать модальное окно
-    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    const editModal = new bootstrap.Modal($('#editModal'));
     editModal.show();
 
     // Добавляем обработчик события для кнопки "Save" внутри модального окна редактирования
-    document.getElementById('editSaveChanges').addEventListener('click', function () {
+    $('#editSaveChanges').addEventListener('click', function () {
       // Получаем значения из полей формы
-      const editedTitle = document.getElementById('editCardTitle').value;
-      const editedDescription = document.getElementById('editCardDescription').value;
-      const editedUser = document.getElementById('editUserSelect').value;
+      const editedTitle = $('#editCardTitle').value;
+      const editedDescription = $('#editCardDescription').value;
+      const editedUser = $('#editUserSelect').value;
 
       // Обновляем данные задачи
       task.title = editedTitle;
       task.description = editedDescription;
       task.user = editedUser;
 
-      // Закрываем модальное окно редактирования
+      // Закрываем модальное окно
       editModal.hide();
-
-      // Перерисовываем задачи на странице
       renderData();
-
-      // Обновляем локальное хранилище и отрисовываем задачи
       setTodosToLocalstorage(todosData);
     });
   }
@@ -277,9 +234,6 @@ document.querySelectorAll('.todo-item__edit-btn').forEach(button => {
   button.addEventListener('click', handleClickEditButton);
 });
 
-// // Добавляем обработчик события для кнопки "Save" в модальном окне редактирования
-// document.getElementById('editSaveChanges').addEventListener('click', handleEditSaveChanges);
-
 // функция обработки изменения статуса
 function handleStatusChange(event) {
   const target = event.target;
@@ -288,7 +242,7 @@ function handleStatusChange(event) {
     const newStatus = target.value;
 
     // Проверяем количество карточек в разделе "IN_PROGRESS"
-    const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
+    const inProgressCount = todosData.filter(task => task.status === STATUS.IN_PROGRESS).length;
 
     if (newStatus === STATUS.IN_PROGRESS && inProgressCount >= 6) {
       alert(
@@ -309,39 +263,13 @@ function updateTaskStatus(taskId, newStatus) {
     task.status = newStatus;
     setTodosToLocalstorage(todosData);
     renderData();
-    // Изменение цвета фона в зависимости от статуса
-    // const taskElement = document.querySelector(`[data-id="${taskId}"]`);
-    // const colors = {
-    //   TODO: 'rgb(174, 255, 178)',
-    //   IN_PROGRESS: 'rgb(75, 255, 14)',
-    //   DONE: 'rgb(25, 174, 174)',
-    // };
-
-    // const backgroundColor = colors[newStatus];
-    // taskElement.style.backgroundColor = backgroundColor;
   }
 }
 
-// подумать еще как сделать удаление всех выполненных
-// deleteAllButtomElement.addEventListener('click', handleDeleteAllDone);
-
-// function handleDeleteAllDone() {
-//   const confirmed = confirm('Are you sure you want to delete all tasks from the DONE section?');
-//   if (confirmed) {
-//     const filteredTodosData = todosData.filter(todo => todo.status !== STATUS.DONE);
-//     todosData.length = 0;
-//     filteredTodosData.forEach(todo => todosData.push(todo));
-//     setTodosToLocalstorage(todosData);
-//     renderData();
-//   }
-// }
-
 // удаляем задания из Done
-// Получаем модальное окно
 const modal = new bootstrap.Modal(deleteAllDoneModal);
 
 deleteAllButton.addEventListener('click', function () {
-  // Показываем модальное окно
   modal.show();
 });
 
@@ -352,64 +280,34 @@ confirmDeleteButton.addEventListener('click', function () {
 
 // Функция для удаления всех задач из "DONE"
 function handleDeleteAllDone() {
-  const filteredTodosData = todosData.filter(todo => todo.status !== STATUS.DONE);
+  const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
   todosData.length = 0;
-  filteredTodosData.forEach(todo => todosData.push(todo));
+  filteredTodosData.forEach(task => todosData.push(task));
   setTodosToLocalstorage(todosData);
   renderData();
 }
 
 // счетчик задач
 function updateTaskCount() {
-  const todoCount = todosData.filter(todo => todo.status === STATUS.TODO).length;
-  const inProgressCount = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
-  const doneCount = todosData.filter(todo => todo.status === STATUS.DONE).length;
+  const todoCount = todosData.filter(task => task.status === STATUS.TODO).length;
+  const inProgressCount = todosData.filter(task => task.status === STATUS.IN_PROGRESS).length;
+  const doneCount = todosData.filter(task => task.status === STATUS.DONE).length;
 
   $('#todoCount').textContent = todoCount;
   $('#inProgressCount').textContent = inProgressCount;
   $('#doneCount').textContent = doneCount;
-
-  // // Проверяем количество задач в разделе "IN_PROGRESS"
-  // const inProgressCount1 = todosData.filter(todo => todo.status === STATUS.IN_PROGRESS).length;
-
-  // if (inProgressCount1 > 6) {
-  //   alert(
-  //     'К сожалению, вы не можете добавить больше 6 карточек. Сначала выполните начатые задачи.'
-  //   );
-  //   return;
-  // }
 }
 
 // время счет настоящее
 
-// 1 способ
-// function updateClock() {
-//   const now = new Date();
-//   const hours = String(now.getHours()).padStart(2, "0");
-//   const minutes = String(now.getMinutes()).padStart(2, "0");
-//   const seconds = String(now.getSeconds()).padStart(2, "0");
-//   const timeString = `${hours}:${minutes}:${seconds}`;
-//   document.querySelector(".header__clock").textContent = timeString;
-// }
-
-// // Update the clock every second
-// setInterval(updateClock, 1000);
-
-// // Initial call to display the clock immediately
-// updateClock();
-
-// 2 способ
-
 function updateClock() {
   const now = new Date();
-  const timeString = new Intl.DateTimeFormat('ru', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  }).format(now);
-  $('.header__clock').textContent = timeString;
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const timeString = `${hours}:${minutes}:${seconds}`;
+  document.querySelector('.header__clock').textContent = timeString;
 }
 
-// вызываем функцию каждую секунду
 setInterval(updateClock, 1000);
 updateClock();
