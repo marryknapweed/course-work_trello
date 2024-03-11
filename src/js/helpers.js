@@ -1,6 +1,6 @@
 import {todosData, STATUS} from './data.js';
 import {buildTemplate} from './templates.js';
-import {addTodoListItem, inProgressListElement, doneListElement} from './app.js';
+import {addTodoListElement, inProgressListElement, doneListElement} from './app.js';
 import {updateTaskCount} from './utils.js';
 
 // $
@@ -42,7 +42,7 @@ function renderData() {
     task.status === STATUS.DONE && doneHtml.push(item);
   });
 
-  addTodoListItem.innerHTML = todoHtml.join('');
+  addTodoListElement.innerHTML = todoHtml.join('');
   inProgressListElement.innerHTML = progressHtml.join('');
   doneListElement.innerHTML = doneHtml.join('');
 

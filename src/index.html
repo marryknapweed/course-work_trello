@@ -64,7 +64,7 @@
               type="button"
               class="deleteTodoBtn"
               data-bs-toggle="modal"
-              data-bs-target="#deleteAllDoneModal"
+              data-bs-target="#deleteAllDoneModalELement"
             >
               Delete All
             </button>
@@ -125,7 +125,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Edit Modal</h5>
+            <h5 class="modal-title">Редактирование задания</h5>
             <button
               type="button"
               class="btn-close"
@@ -136,7 +136,7 @@
           <div class="modal-body">
             <form id="editTodoForm">
               <div class="form-group">
-                <label for="editCardTitle">Title:</label>
+                <label for="editCardTitle">Название:</label>
                 <input
                   type="text"
                   class="form-control"
@@ -145,7 +145,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="editCardDescription">Description:</label>
+                <label for="editCardDescription">Описание:</label>
                 <textarea
                   class="form-control"
                   id="editCardDescription"
@@ -153,21 +153,28 @@
                 ></textarea>
               </div>
               <div class="form-group">
-                <label for="editUserSelect">Assignee:</label>
+                <label for="editUserSelect">Исполнитель:</label>
                 <select class="form-control" id="editUserSelect"></select>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="editSaveChanges">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="editSaveChanges"
+              data-bs-dismiss="modal"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- модальное окно для удаления из заданий DONE-->
-    <div class="modal" tabindex="-1" id="deleteAllDoneModal">
+    <div class="modal" tabindex="-1" id="deleteAllDoneModalELement">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

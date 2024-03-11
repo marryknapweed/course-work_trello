@@ -1,38 +1,48 @@
 import {renderData, $, $$, setTodosToLocalstorage} from './helpers.js';
 import {todosData, STATUS} from './data.js';
-import {handleSaveChanges, handleClickRemoveButton, handleStatusChange} from './handlers.js';
+import {
+  handleSaveChanges,
+  handleClickRemoveButton,
+  handleStatusChange,
+  handleClickEditButton,
+} from './handlers.js';
 
 // Вызовы
-todoListElement = $$('.todo__content');
-addTodoListItem = $('#todoList');
-inProgressListElement = $('.in-progress__content');
-doneListElement = $('.done__content');
-saveChangesBtnAdd = $('#saveChanges');
-modalTitleInput = $('#addCardTitle');
-modalDescriptionInput = $('#addCardDescription');
-modalAddUserSelect = $('#addUserSelect');
-cardSelector = $('.cardSelector');
-deleteAllButton = $('.deleteTodoBtn');
-deleteAllDoneModal = $('#deleteAllDoneModal');
-confirmDeleteButton = $('#confirmDelete');
+const todoListElement = $$('.todo__content');
+const addTodoListElement = $('#todoList');
+const inProgressListElement = $('.in-progress__content');
+const doneListElement = $('.done__content');
+const saveChangesButtonAddElement = $('#saveChanges');
+const modalTitleInputElement = $('#addCardTitle');
+const modalDescriptionInputElement = $('#addCardDescription');
+const modalAddUserSelectElement = $('#addUserSelect');
+const cardSelectorElement = $('.cardSelectorElement');
+const deleteAllButtonElement = $('.deleteTodoBtn');
+const deleteAllDoneModalELement = $('#deleteAllDoneModalELement');
+const confirmDeleteButtonElement = $('#confirmDelete');
 
 export {
   todoListElement,
-  addTodoListItem,
+  addTodoListElement,
   inProgressListElement,
   doneListElement,
-  saveChangesBtnAdd,
-  modalTitleInput,
-  modalDescriptionInput,
-  modalAddUserSelect,
-  cardSelector,
-  deleteAllButton,
-  deleteAllDoneModal,
+  saveChangesButtonAddElement,
+  modalTitleInputElement,
+  modalDescriptionInputElement,
+  modalAddUserSelectElement,
+  cardSelectorElement,
+  deleteAllButtonElement,
+  deleteAllDoneModalELement,
   confirmDeleteButton,
 };
 
+if (todosData.length > 0) {
+  renderData();
+}
+
 // События
-saveChangesBtnAdd.addEventListener('click', handleSaveChanges);
+
+saveChangesButtonAddElement.addEventListener('click', handleSaveChanges);
 
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
@@ -42,9 +52,7 @@ todoListElement.forEach(button => {
   button.addEventListener('click', handleClickRemoveButton);
 });
 
-if (todosData.length > 0) {
-  renderData();
-}
+$('.todo-item__edit-btn').addEventListener('click', handleClickEditButton);
 
 // Функция для загрузки пользователей с сервера
 async function fetchUsers() {
@@ -61,7 +69,7 @@ async function fetchUsers() {
 }
 // Функция для заполнения выпадающего списка
 async function loadUsersAndPopulateSelect() {
-  const modalAddUserSelect = document.getElementById('addUserSelect');
+  const modalAddUserSelectElement = document.getElementById('addUserSelect');
   const modalEditUserSelect = document.getElementById('editUserSelect');
 
   try {
@@ -73,7 +81,7 @@ async function loadUsersAndPopulateSelect() {
       optionAdd.textContent = user.name;
       optionEdit.textContent = user.name;
 
-      modalAddUserSelect.append(optionAdd);
+      modalAddUserSelectElement.append(optionAdd);
       modalEditUserSelect.append(optionEdit);
     });
   } catch (error) {
@@ -85,67 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
   loadUsersAndPopulateSelect();
 });
 
-// изменение задачи
+// // удаляем задания из Done
+// const modal = new bootstrap.Modal(deleteAllDoneModalELement);
 
-function handleClickEditButton({target}) {
-  const {role} = target.dataset;
+// deleteAllButtonElement.addEventListener('click', function () {
+//   modal.show();
+// });
 
-  if (role === 'edit') {
-    const todoElement = target.closest('.todo-item');
-    const id = todoElement.dataset.id;
-    const task = todosData.find(task => task.id === +id);
+// confirmDeleteButton.addEventListener('click', function () {
+//   handleDeleteAllDone();
+//   modal.hide();
+// });
 
-    // Заполняем модальное окно данными задания
-    $('#editCardTitle').value = task.title;
-    $('#editCardDescription').value = task.description;
-    $('#addUserSelect').value = task.user;
-
-    // Показать модальное окно
-    const editModal = new bootstrap.Modal($('#editModal'));
-    editModal.show();
-
-    // Добавляем обработчик события для кнопки "Save" внутри модального окна редактирования
-    $('#editSaveChanges').addEventListener('click', function () {
-      // Получаем значения из полей формы
-      const editedTitle = $('#editCardTitle').value;
-      const editedDescription = $('#editCardDescription').value;
-      const editedUser = $('#editUserSelect').value;
-
-      // Обновляем данные задачи
-      task.title = editedTitle;
-      task.description = editedDescription;
-      task.user = editedUser;
-
-      // Закрываем модальное окно
-      editModal.hide();
-      renderData();
-      setTodosToLocalstorage(todosData);
-    });
-  }
-}
-
-// Добавляем обработчик событий для кнопок "Edit"
-document.querySelectorAll('.todo-item__edit-btn').forEach(button => {
-  button.addEventListener('click', handleClickEditButton);
-});
-
-// удаляем задания из Done
-const modal = new bootstrap.Modal(deleteAllDoneModal);
-
-deleteAllButton.addEventListener('click', function () {
-  modal.show();
-});
-
-confirmDeleteButton.addEventListener('click', function () {
-  handleDeleteAllDone();
-  modal.hide();
-});
-
-// Функция для удаления всех задач из "DONE"
-function handleDeleteAllDone() {
-  const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
-  todosData.length = 0;
-  filteredTodosData.forEach(task => todosData.push(task));
-  setTodosToLocalstorage(todosData);
-  renderData();
-}
+// // Функция для удаления всех задач из "DONE"
+// function handleDeleteAllDone() {
+//   const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
+//   todosData.length = 0;
+//   filteredTodosData.forEach(task => todosData.push(task));
+//   setTodosToLocalstorage(todosData);
+//   renderData();
+// }
