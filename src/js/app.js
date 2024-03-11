@@ -1,5 +1,5 @@
-import {renderData, $, $$, setTodosToLocalstorage} from './helpers.js';
-import {todosData, STATUS} from './data.js';
+import {renderData, $, $$} from './helpers.js';
+import {todosData} from './data.js';
 import {
   handleSaveChanges,
   handleClickRemoveButton,
@@ -34,7 +34,7 @@ export {
   cardSelectorElement,
   deleteAllButtonElement,
   deleteAllDoneModal,
-  confirmDeleteButton,
+  confirmDeleteButtonElement,
 };
 
 if (todosData.length > 0) {
@@ -53,7 +53,9 @@ todoListElement.forEach(button => {
   button.addEventListener('click', handleClickRemoveButton);
 });
 
-// $('.todo-item__edit-btn').addEventListener('click', handleClickEditButton);
+todoListElement.forEach(button => {
+  button.addEventListener('click', handleClickEditButton);
+});
 
 confirmDeleteButtonElement.addEventListener('click', handleDeleteAllDone);
 

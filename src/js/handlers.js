@@ -80,19 +80,17 @@ function handleClickEditButton({target}) {
   const {role} = target.dataset;
 
   if (role === 'edit') {
-    // Получаем данные задачи
     const todoElement = target.closest('.todo-item');
     const id = todoElement.dataset.id;
     const task = todosData.find(task => task.id === +id);
 
-    // Заполняем поля формы данными задачи
+    // Заполняем поля формы данными которые были в задаче
     $('#editCardTitle').value = task.title;
     $('#editCardDescription').value = task.description;
     $('#addUserSelect').value = task.user;
 
-    // Добавляем обработчик события для кнопки "Save"
     $('#editSaveChanges').addEventListener('click', function () {
-      // Получаем значения из полей формы
+      // Получаем новые значения из полей формы
       const editedTitle = $('#editCardTitle').value;
       const editedDescription = $('#editCardDescription').value;
       const editedUser = $('#editUserSelect').value;
@@ -102,7 +100,6 @@ function handleClickEditButton({target}) {
       task.description = editedDescription;
       task.user = editedUser;
 
-      // Сохраняем изменения
       setTodosToLocalstorage(todosData);
       renderData();
     });
