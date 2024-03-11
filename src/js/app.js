@@ -18,8 +18,6 @@ const modalTitleInputElement = $('#addCardTitle');
 const modalDescriptionInputElement = $('#addCardDescription');
 const modalAddUserSelectElement = $('#addUserSelect');
 const cardSelectorElement = $('.cardSelectorElement');
-const deleteAllButtonElement = $('.deleteTodoBtn');
-const deleteAllDoneModal = $('#deleteAllDoneModal');
 const confirmDeleteButtonElement = $('#confirmDelete');
 
 export {
@@ -32,8 +30,6 @@ export {
   modalDescriptionInputElement,
   modalAddUserSelectElement,
   cardSelectorElement,
-  deleteAllButtonElement,
-  deleteAllDoneModal,
   confirmDeleteButtonElement,
 };
 

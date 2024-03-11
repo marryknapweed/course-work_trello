@@ -2,16 +2,15 @@ import {getTodosFromLocalstorage} from './helpers.js';
 
 const todosData = getTodosFromLocalstorage();
 
-function createTodo(title, description, user, status) {
-  const tasks = {
-    id: Date.now(),
-    title,
-    description,
-    user,
-    createdAt: new Date(),
-    status,
-  };
-  return tasks;
+class Tasks {
+  constructor(title, description, user, status) {
+    (this.id = Date.now()),
+      (this.title = title),
+      (this.description = description),
+      (this.user = user),
+      (this.createdAt = new Date()),
+      (this.status = status);
+  }
 }
 
 const STATUS = {
@@ -19,4 +18,4 @@ const STATUS = {
   IN_PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE',
 };
-export {todosData, createTodo, STATUS};
+export {todosData, STATUS, Tasks};

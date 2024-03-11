@@ -3,7 +3,7 @@ import {
   modalDescriptionInputElement,
   modalAddUserSelectElement,
 } from './app.js';
-import {STATUS, createTodo, todosData} from './data.js';
+import {STATUS, Tasks, todosData} from './data.js';
 import {setTodosToLocalstorage, $, renderData} from './helpers.js';
 
 function handleSaveChanges() {
@@ -12,8 +12,7 @@ function handleSaveChanges() {
   const user = modalAddUserSelectElement.value;
   const status = STATUS.TODO;
 
-  const newTodo = createTodo(title, description, user, status);
-
+  const newTodo = new Tasks(title, description, user, status);
   todosData.push(newTodo);
 
   modalTitleInputElement.value = '';
