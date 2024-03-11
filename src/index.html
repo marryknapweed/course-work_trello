@@ -64,7 +64,7 @@
               type="button"
               class="deleteTodoBtn"
               data-bs-toggle="modal"
-              data-bs-target="#deleteAllDoneModalELement"
+              data-bs-target="#deleteAllDoneModal"
             >
               Delete All
             </button>
@@ -174,7 +174,7 @@
     </div>
 
     <!-- модальное окно для удаления из заданий DONE-->
-    <div class="modal" tabindex="-1" id="deleteAllDoneModalELement">
+    <div class="modal" tabindex="-1" id="deleteAllDoneModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -191,7 +191,9 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="button" class="btn btn-danger" id="confirmDelete">Удалить</button>
+            <button type="button" class="btn btn-danger" id="confirmDelete" data-bs-dismiss="modal">
+              Удалить
+            </button>
           </div>
         </div>
       </div>

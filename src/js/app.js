@@ -5,6 +5,7 @@ import {
   handleClickRemoveButton,
   handleStatusChange,
   handleClickEditButton,
+  handleDeleteAllDone,
 } from './handlers.js';
 
 // Вызовы
@@ -18,7 +19,7 @@ const modalDescriptionInputElement = $('#addCardDescription');
 const modalAddUserSelectElement = $('#addUserSelect');
 const cardSelectorElement = $('.cardSelectorElement');
 const deleteAllButtonElement = $('.deleteTodoBtn');
-const deleteAllDoneModalELement = $('#deleteAllDoneModalELement');
+const deleteAllDoneModal = $('#deleteAllDoneModal');
 const confirmDeleteButtonElement = $('#confirmDelete');
 
 export {
@@ -32,7 +33,7 @@ export {
   modalAddUserSelectElement,
   cardSelectorElement,
   deleteAllButtonElement,
-  deleteAllDoneModalELement,
+  deleteAllDoneModal,
   confirmDeleteButton,
 };
 
@@ -52,7 +53,9 @@ todoListElement.forEach(button => {
   button.addEventListener('click', handleClickRemoveButton);
 });
 
-$('.todo-item__edit-btn').addEventListener('click', handleClickEditButton);
+// $('.todo-item__edit-btn').addEventListener('click', handleClickEditButton);
+
+confirmDeleteButtonElement.addEventListener('click', handleDeleteAllDone);
 
 // Функция для загрузки пользователей с сервера
 async function fetchUsers() {
@@ -92,24 +95,3 @@ async function loadUsersAndPopulateSelect() {
 document.addEventListener('DOMContentLoaded', () => {
   loadUsersAndPopulateSelect();
 });
-
-// // удаляем задания из Done
-// const modal = new bootstrap.Modal(deleteAllDoneModalELement);
-
-// deleteAllButtonElement.addEventListener('click', function () {
-//   modal.show();
-// });
-
-// confirmDeleteButton.addEventListener('click', function () {
-//   handleDeleteAllDone();
-//   modal.hide();
-// });
-
-// // Функция для удаления всех задач из "DONE"
-// function handleDeleteAllDone() {
-//   const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
-//   todosData.length = 0;
-//   filteredTodosData.forEach(task => todosData.push(task));
-//   setTodosToLocalstorage(todosData);
-//   renderData();
-// }

@@ -109,4 +109,20 @@ function handleClickEditButton({target}) {
   }
 }
 
-export {handleSaveChanges, handleClickRemoveButton, handleStatusChange, handleClickEditButton};
+// удаляем задания из Done
+
+function handleDeleteAllDone() {
+  const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
+  todosData.length = 0;
+  filteredTodosData.forEach(task => todosData.push(task));
+  setTodosToLocalstorage(todosData);
+  renderData();
+}
+
+export {
+  handleSaveChanges,
+  handleClickRemoveButton,
+  handleStatusChange,
+  handleClickEditButton,
+  handleDeleteAllDone,
+};
