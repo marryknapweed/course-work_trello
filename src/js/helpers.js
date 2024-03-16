@@ -1,4 +1,4 @@
-import {todosData, STATUS} from './data.js';
+import {todosData, STATUSES} from './data.js';
 import {buildTemplate} from './templates.js';
 import {addTodoListElement, inProgressListElement, doneListElement} from './app.js';
 import {updateTaskCount} from './utils.js';
@@ -37,9 +37,9 @@ function renderData() {
 
   todosData.forEach(task => {
     const item = buildTemplate(task);
-    task.status === STATUS.TODO && todoHtml.push(item);
-    task.status === STATUS.IN_PROGRESS && progressHtml.push(item);
-    task.status === STATUS.DONE && doneHtml.push(item);
+    task.status === STATUSES.TODO && todoHtml.push(item);
+    task.status === STATUSES.IN_PROGRESS && progressHtml.push(item);
+    task.status === STATUSES.DONE && doneHtml.push(item);
   });
 
   addTodoListElement.innerHTML = todoHtml.join('');

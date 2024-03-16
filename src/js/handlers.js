@@ -3,14 +3,15 @@ import {
   modalDescriptionInputElement,
   modalAddUserSelectElement,
 } from './app.js';
-import {STATUS, Tasks, todosData} from './data.js';
+import {STATUSES, Tasks, todosData} from './data.js';
 import {setTodosToLocalstorage, $, renderData} from './helpers.js';
 
-function handleSaveChanges() {
+// функция для сохрания данных введенных в модальное окно и создания новой задачи
+function handleSaveAddTask() {
   const title = modalTitleInputElement.value;
   const description = modalDescriptionInputElement.value;
   const user = modalAddUserSelectElement.value;
-  const status = STATUS.TODO;
+  const status = STATUSES.TODO;
 
   const newTodo = new Tasks(title, description, user, status);
   todosData.push(newTodo);
@@ -19,14 +20,11 @@ function handleSaveChanges() {
   modalDescriptionInputElement.value = '';
   modalAddUserSelectElement.value = '';
 
-  const closeButton = $('.btn-close');
-  closeButton.click();
-
   setTodosToLocalstorage(todosData);
   renderData();
 }
 
-// удаление задачи
+// функция удаления задачи при клике на кнопку delete
 function handleClickRemoveButton({target}) {
   const {role} = target.dataset;
 
@@ -41,20 +39,23 @@ function handleClickRemoveButton({target}) {
   renderData();
 }
 
-// функция обработки изменения статуса
+// функция обработки изменения статуса задачи
 function handleStatusChange(event) {
   const target = event.target;
-  if (target.classList.contains('cardSelectorElement')) {
+
+  // Если кликнули на select, то обрабатываем его событие
+  if (target.classList.contains('cardSelector')) {
     const taskId = target.closest('.todo-item').dataset.id;
     const newStatus = target.value;
 
-    // Проверяем количество карточек в разделе "IN_PROGRESS"
-    const inProgressCount = todosData.filter(task => task.status === STATUS.IN_PROGRESS).length;
-
-    if (newStatus === STATUS.IN_PROGRESS && inProgressCount >= 6) {
+    // Проверяем, не превышено ли максимальное количество задач в статусе "IN_PROGRESS"
+    const inProgressCount = todosData.filter(task => task.status === STATUSES.IN_PROGRESS).length;
+    // Если превышено, выводим предупреждение и не добавляем задачу
+    if (newStatus === STATUSES.IN_PROGRESS && inProgressCount >= 6) {
       alert(
         'К сожалению, вы не можете добавить больше 6 карточек в раздел "IN PROGRESS". Сначала выполните начатые задачи.'
       );
+      renderData();
       return;
     }
 
@@ -63,7 +64,7 @@ function handleStatusChange(event) {
   setTodosToLocalstorage(todosData);
 }
 
-// изменение статуса
+// функция для обновления статуса задачи для перемещения задачи в другую колонку
 function updateTaskStatus(taskId, newStatus) {
   const task = todosData.find(task => task.id === +taskId);
   if (task) {
@@ -73,7 +74,7 @@ function updateTaskStatus(taskId, newStatus) {
   }
 }
 
-// редактирование задачи
+// функция для редактировании задачи при нажатии на кнопку edit и сохранения изменений в задаче
 
 function handleClickEditButton({target}) {
   const {role} = target.dataset;
@@ -105,10 +106,10 @@ function handleClickEditButton({target}) {
   }
 }
 
-// удаляем задания из Done
+// функция удаления всех выполненных задач из Done
 
 function handleDeleteAllDone() {
-  const filteredTodosData = todosData.filter(task => task.status !== STATUS.DONE);
+  const filteredTodosData = todosData.filter(task => task.status !== STATUSES.DONE);
   todosData.length = 0;
   filteredTodosData.forEach(task => todosData.push(task));
   setTodosToLocalstorage(todosData);
@@ -116,7 +117,7 @@ function handleDeleteAllDone() {
 }
 
 export {
-  handleSaveChanges,
+  handleSaveAddTask,
   handleClickRemoveButton,
   handleStatusChange,
   handleClickEditButton,

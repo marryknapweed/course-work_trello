@@ -1,14 +1,14 @@
 import {renderData, $, $$} from './helpers.js';
 import {todosData} from './data.js';
 import {
-  handleSaveChanges,
+  handleSaveAddTask,
   handleClickRemoveButton,
   handleStatusChange,
   handleClickEditButton,
   handleDeleteAllDone,
 } from './handlers.js';
+import {Modal, Select} from 'bootstrap';
 
-// Вызовы
 const todoListElement = $$('.todo__content');
 const addTodoListElement = $('#todoList');
 const inProgressListElement = $('.in-progress__content');
@@ -17,7 +17,6 @@ const saveChangesButtonAddElement = $('#saveChanges');
 const modalTitleInputElement = $('#addCardTitle');
 const modalDescriptionInputElement = $('#addCardDescription');
 const modalAddUserSelectElement = $('#addUserSelect');
-const cardSelectorElement = $('.cardSelectorElement');
 const confirmDeleteButtonElement = $('#confirmDelete');
 
 export {
@@ -29,17 +28,15 @@ export {
   modalTitleInputElement,
   modalDescriptionInputElement,
   modalAddUserSelectElement,
-  cardSelectorElement,
   confirmDeleteButtonElement,
 };
 
+// проверяем наличие данных в списке задач и рендерим их, если они есть
 if (todosData.length > 0) {
   renderData();
 }
 
-// События
-
-saveChangesButtonAddElement.addEventListener('click', handleSaveChanges);
+saveChangesButtonAddElement.addEventListener('click', handleSaveAddTask);
 
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
@@ -68,7 +65,7 @@ async function fetchUsers() {
     console.error(error);
   }
 }
-// Функция для заполнения выпадающего списка
+// Функция для заполнения выпадающего списка после загрузки с сервера
 async function loadUsersAndPopulateSelect() {
   const modalAddUserSelectElement = document.getElementById('addUserSelect');
   const modalEditUserSelect = document.getElementById('editUserSelect');

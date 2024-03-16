@@ -10,11 +10,11 @@ function buildTemplate({id, title, description, user, createdAt, status}) {
         <p class="todo-item__user">
           ${user}<time class="todo-item__date">${time}</time>
         </p>
-        <div class="todo-item__buttom">
-          <button class="todo-item__edit-btn" data-role="edit" data-bs-toggle="modal"
+        <div class="todo-item__buttoms">
+          <button class="buttom-edit" data-role="edit" data-bs-toggle="modal"
           data-bs-target="#editModal">Edit</button>
-          <button class="todo-item__delete-btn" data-role="delete">Delete</button>
-          <select class="form-control cardSelectorElement" data-id="${id}">
+          <button class="buttom-delete" data-role="delete">Delete</button>
+          <select class="form-control cardSelector" data-id="${id}">
           <option value="TODO" ${status === 'TODO' ? 'selected' : ''}>TODO</option>
           <option value="IN_PROGRESS" ${
             status === 'IN_PROGRESS' ? 'selected' : ''

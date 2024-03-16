@@ -1,18 +1,18 @@
-import {STATUS, todosData} from './data.js';
+import {STATUSES, todosData} from './data.js';
 import {$} from './helpers.js';
 
-// счетчик задач
+// функция для обновления счетчика задач. Подсчет количества задач в каждом статусе и обновляет соответствующий счетчик
 function updateTaskCount() {
-  const todoCount = todosData.filter(task => task.status === STATUS.TODO).length;
-  const inProgressCount = todosData.filter(task => task.status === STATUS.IN_PROGRESS).length;
-  const doneCount = todosData.filter(task => task.status === STATUS.DONE).length;
+  const todoCount = todosData.filter(task => task.status === STATUSES.TODO).length;
+  const inProgressCount = todosData.filter(task => task.status === STATUSES.IN_PROGRESS).length;
+  const doneCount = todosData.filter(task => task.status === STATUSES.DONE).length;
 
   $('#todoCount').textContent = todoCount;
   $('#inProgressCount').textContent = inProgressCount;
   $('#doneCount').textContent = doneCount;
 }
 
-// время счет настоящее
+// функция для обновления времени. Обновляет текущее время каждую секунду и отображает его в header
 
 function updateClock() {
   const now = new Date();
