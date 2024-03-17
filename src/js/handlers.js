@@ -2,6 +2,7 @@ import {
   modalTitleInputElement,
   modalDescriptionInputElement,
   modalAddUserSelectElement,
+  editFormElement,
 } from './app.js';
 import {STATUSES, Tasks, todosData} from './data.js';
 import {setTodosToLocalstorage, $, renderData} from './helpers.js';
@@ -39,18 +40,17 @@ function handleClickRemoveButton({target}) {
   renderData();
 }
 
-// функция обработки изменения статуса задачи
 function handleStatusChange(event) {
   const target = event.target;
 
-  // Если кликнули на select, то обрабатываем его событие
+  // Проверяем, является ли целевой элемент выпадающим списком задач
   if (target.classList.contains('cardSelector')) {
     const taskId = target.closest('.todo-item').dataset.id;
     const newStatus = target.value;
 
-    // Проверяем, не превышено ли максимальное количество задач в статусе "IN_PROGRESS"
     const inProgressCount = todosData.filter(task => task.status === STATUSES.IN_PROGRESS).length;
-    // Если превышено, выводим предупреждение и не добавляем задачу
+
+    // Если новый статус "IN_PROGRESS" и превышено максимальное количество задач в этом статусе
     if (newStatus === STATUSES.IN_PROGRESS && inProgressCount >= 6) {
       alert(
         'К сожалению, вы не можете добавить больше 6 карточек в раздел "IN PROGRESS". Сначала выполните начатые задачи.'
@@ -59,18 +59,15 @@ function handleStatusChange(event) {
       return;
     }
 
-    updateTaskStatus(taskId, newStatus);
-  }
-  setTodosToLocalstorage(todosData);
-}
+    const task = todosData.find(task => task.id === +taskId);
 
-// функция для обновления статуса задачи для перемещения задачи в другую колонку
-function updateTaskStatus(taskId, newStatus) {
-  const task = todosData.find(task => task.id === +taskId);
-  if (task) {
-    task.status = newStatus;
-    setTodosToLocalstorage(todosData);
-    renderData();
+    // Если задача найдена, обновляем её статус
+    if (task) {
+      task.status = newStatus;
+
+      renderData();
+      setTodosToLocalstorage(todosData);
+    }
   }
 }
 
@@ -89,7 +86,7 @@ function handleClickEditButton({target}) {
     $('#editCardDescription').value = task.description;
     $('#addUserSelect').value = task.user;
 
-    $('#editSaveChanges').addEventListener('click', function () {
+    editFormElement.addEventListener('submit', function () {
       // Получаем новые значения из полей формы
       const editedTitle = $('#editCardTitle').value;
       const editedDescription = $('#editCardDescription').value;
@@ -109,7 +106,7 @@ function handleClickEditButton({target}) {
 // функция удаления всех выполненных задач из Done
 
 function handleDeleteAllDone() {
-  const filteredTodosData = todosData.filter(task => task.status !== STATUSES.DONE);
+  const filteredTodosData = todosData.filter(task => task.status !== STATUSES.DONE); // все задачи кроме выполненных
   todosData.length = 0;
   filteredTodosData.forEach(task => todosData.push(task));
   setTodosToLocalstorage(todosData);

@@ -13,22 +13,23 @@ const todoListElement = $$('.todo__content');
 const addTodoListElement = $('#todoList');
 const inProgressListElement = $('.in-progress__content');
 const doneListElement = $('.done__content');
-const saveChangesButtonAddElement = $('#saveChanges');
 const modalTitleInputElement = $('#addCardTitle');
 const modalDescriptionInputElement = $('#addCardDescription');
 const modalAddUserSelectElement = $('#addUserSelect');
 const confirmDeleteButtonElement = $('#confirmDelete');
+const addFormELement = $('#todoForm');
+const editFormElement = $('#editTodoForm');
 
 export {
   todoListElement,
   addTodoListElement,
   inProgressListElement,
   doneListElement,
-  saveChangesButtonAddElement,
   modalTitleInputElement,
   modalDescriptionInputElement,
   modalAddUserSelectElement,
   confirmDeleteButtonElement,
+  editFormElement,
 };
 
 // проверяем наличие данных в списке задач и рендерим их, если они есть
@@ -36,7 +37,7 @@ if (todosData.length > 0) {
   renderData();
 }
 
-saveChangesButtonAddElement.addEventListener('click', handleSaveAddTask);
+addFormELement.addEventListener('submit', handleSaveAddTask);
 
 todoListElement.forEach(element => {
   element.addEventListener('change', handleStatusChange);
@@ -67,8 +68,8 @@ async function fetchUsers() {
 }
 // Функция для заполнения выпадающего списка после загрузки с сервера
 async function loadUsersAndPopulateSelect() {
-  const modalAddUserSelectElement = document.getElementById('addUserSelect');
-  const modalEditUserSelect = document.getElementById('editUserSelect');
+  const modalAddUserSelectElement = $('#addUserSelect');
+  const modalEditUserSelect = $('#editUserSelect');
 
   try {
     const users = await fetchUsers();
