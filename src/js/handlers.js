@@ -2,7 +2,6 @@ import {
   modalTitleInputElement,
   modalDescriptionInputElement,
   modalAddUserSelectElement,
-  editFormElement,
 } from './app.js';
 import {STATUSES, Tasks, todosData} from './data.js';
 import {setTodosToLocalstorage, $, renderData} from './helpers.js';
@@ -73,35 +72,48 @@ function handleStatusChange(event) {
 
 // функция для редактировании задачи при нажатии на кнопку edit и сохранения изменений в задаче
 
+// Переменная для хранения выбранной задачи
+let currentTask = null;
+
+// Функция для обработки нажатия на кнопку edit и отрисовка данных в форме редактирования
 function handleClickEditButton({target}) {
   const {role} = target.dataset;
 
   if (role === 'edit') {
     const todoElement = target.closest('.todo-item');
     const id = todoElement.dataset.id;
-    const task = todosData.find(task => task.id === +id);
+    currentTask = todosData.find(task => task.id === +id);
 
-    // Заполняем поля формы данными которые были в задаче
-    $('#editCardTitle').value = task.title;
-    $('#editCardDescription').value = task.description;
-    $('#editUserSelect').value = task.user;
-
-    editFormElement.addEventListener('submit', function () {
-      // Получаем новые значения из полей формы
-      const editedTitle = $('#editCardTitle').value;
-      const editedDescription = $('#editCardDescription').value;
-      const editedUser = $('#editUserSelect').value;
-
-      // Обновляем данные задачи
-      task.title = editedTitle;
-      task.description = editedDescription;
-      task.user = editedUser;
-
-      setTodosToLocalstorage(todosData);
-      renderData();
-    });
+    // Заполняем поля формы данными, которые были в задаче
+    $('#editCardTitle').value = currentTask.title;
+    $('#editCardDescription').value = currentTask.description;
+    $('#editUserSelect').value = currentTask.user;
   }
 }
+
+// Обработчик события submit для формы редактирования задачи
+function handleEditFormSubmit(event) {
+  event.preventDefault();
+  if (!currentTask) return;
+
+  // Получаем новые значения из полей формы
+  const editedTitle = $('#editCardTitle').value;
+  const editedDescription = $('#editCardDescription').value;
+  const editedUser = $('#editUserSelect').value;
+
+  // Обновляем данные задачи
+  currentTask.title = editedTitle;
+  currentTask.description = editedDescription;
+  currentTask.user = editedUser;
+
+  setTodosToLocalstorage(todosData);
+  renderData();
+  console.log('jdfsfw');
+}
+// const todoWrapElement = $('.todo__wrap');
+// todoWrapElement.addEventListener('click', handleClickEditButton);
+
+// editFormElement.addEventListener('submit', handleEditFormSubmit);
 
 // функция удаления всех выполненных задач из Done
 
@@ -119,4 +131,5 @@ export {
   handleStatusChange,
   handleClickEditButton,
   handleDeleteAllDone,
+  handleEditFormSubmit,
 };

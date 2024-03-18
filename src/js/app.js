@@ -6,6 +6,7 @@ import {
   handleStatusChange,
   handleClickEditButton,
   handleDeleteAllDone,
+  handleEditFormSubmit,
 } from './handlers.js';
 import {Modal, Select} from 'bootstrap';
 
@@ -18,6 +19,7 @@ const modalDescriptionInputElement = $('#addCardDescription');
 const modalAddUserSelectElement = $('#addUserSelect');
 const confirmDeleteButtonElement = $('#confirmDelete');
 const addFormELement = $('#todoForm');
+const todoWrapElement = $('.todo__wrap');
 const editFormElement = $('#editTodoForm');
 
 export {
@@ -29,7 +31,6 @@ export {
   modalDescriptionInputElement,
   modalAddUserSelectElement,
   confirmDeleteButtonElement,
-  editFormElement,
 };
 
 // проверяем наличие данных в списке задач и рендерим их, если они есть
@@ -47,9 +48,13 @@ todoListElement.forEach(button => {
   button.addEventListener('click', handleClickRemoveButton);
 });
 
-todoListElement.forEach(button => {
-  button.addEventListener('click', handleClickEditButton);
-});
+todoWrapElement.addEventListener('click', handleClickEditButton);
+
+editFormElement.addEventListener('submit', handleEditFormSubmit);
+
+// todoListElement.forEach(button => {
+//   button.addEventListener('click', handleClickEditButton);
+// });
 
 confirmDeleteButtonElement.addEventListener('click', handleDeleteAllDone);
 
