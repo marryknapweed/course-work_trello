@@ -84,7 +84,7 @@ function handleClickEditButton({target}) {
     // Заполняем поля формы данными которые были в задаче
     $('#editCardTitle').value = task.title;
     $('#editCardDescription').value = task.description;
-    $('#addUserSelect').value = task.user;
+    $('#editUserSelect').value = task.user;
 
     editFormElement.addEventListener('submit', function () {
       // Получаем новые значения из полей формы

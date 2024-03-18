@@ -109,13 +109,20 @@
                 <label for="addUserSelect">Исполнитель:</label>
                 <select class="form-control" id="addUserSelect"></select>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Отмена
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="saveChanges"
+                  data-bs-dismiss="modal"
+                >
+                  Добавить
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="submit" class="btn btn-primary" id="saveChanges" data-bs-dismiss="modal">
-              Добавить
-            </button>
           </div>
         </div>
       </div>
@@ -157,18 +164,20 @@
                 <label for="editUserSelect">Исполнитель:</label>
                 <select class="form-control" id="editUserSelect"></select>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Отмена
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="editSaveChanges"
+                  data-bs-dismiss="modal"
+                >
+                  Сохранить
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="editSaveChanges"
-              data-bs-dismiss="modal"
-            >
-              Сохранить
-            </button>
           </div>
         </div>
       </div>
